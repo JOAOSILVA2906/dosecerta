@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dose Certa</title>
+  <link rel="stylesheet" href="dose.css">
+  <script src="dose.js" defer></script>
+</head>
+<body>
+  <!-- Ícones vetoriais: não precisa instalar nenhuma biblioteca. -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="svg-definitions" aria-hidden="true">
+    <symbol id="i-search" viewBox="0 0 24 24">
+      <circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="m15 15 6 6" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24">
+      <path d="M12 1a8 8 0 0 0-8 8c0 6 8 14 8 14s8-8 8-14a8 8 0 0 0-8-8Z" fill="currentColor"/>
+      <circle cx="12" cy="9" r="3" fill="white"/>
+    </symbol>
+    <symbol id="i-order" viewBox="0 0 24 24">
+      <rect x="5" y="2" width="14" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M8 7h8M8 11h8M8 15h6" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    <symbol id="i-more" viewBox="0 0 24 24">
+      <circle cx="5" cy="12" r="2" fill="currentColor"/>
+      <circle cx="12" cy="12" r="2" fill="currentColor"/>
+      <circle cx="19" cy="12" r="2" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-store" viewBox="0 0 24 24">
+      <path d="M3 10v11h18V10M2 9l2-6h16l2 6M2 9q2 4 5 0 2 4 5 0 2 4 5 0 3 4 5 0M9 21v-8h6v8"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24">
+      <path d="M2 4h12v14H2zM14 9h4l4 5v4h-8"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="6" cy="19" r="3" fill="currentColor"/>
+      <circle cx="18" cy="19" r="3" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M12 6v6l4 2" fill="none" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 12h4l2-4 2 8 2-4h4" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 21v-2a8 8 0 0 1 16 0v2" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 10V6a4 4 0 0 1 8 0v4M12 14v3" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+  </svg>
+
+  <noscript>Ative o JavaScript no navegador para buscar medicamentos e simular pedidos.</noscript>
+
+  <div class="app auth-mode">
+    <header>
+      <button class="back" id="back" aria-label="Voltar" hidden>‹</button>
+      <div class="brand"><span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg></span><span class="brand-name">Dose<span>Certa</span><small>CUIDADO QUE CONECTA</small></span></div>
+      <span class="desktop-header-note">Seu cuidado, conectado.</span>
+      <div class="header-actions" id="headerActions" hidden>
+        <button class="icon-button" id="notificationsButton" aria-label="Notificações"><svg class="icon" aria-hidden="true"><use href="#i-bell"/></svg><span class="notification-dot" id="notificationDot" hidden></span></button>
+        <button class="avatar" id="profileButton" aria-label="Meu perfil">V</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="auth" class="screen active auth-screen">
+        <div class="auth-hero">
+          <span class="eyebrow">MAIS PERTO DO SEU BEM-ESTAR</span>
+          <h1>Seu cuidado.<br>Na <em>dose certa.</em></h1>
+          <p>Encontre o que precisa e escolha como receber. Tudo em um só lugar.</p>
+          <div class="care-art" aria-hidden="true"><span class="art-orbit"></span><span class="art-cross">+</span><span class="art-capsule"></span><span class="art-card"><svg class="icon"><use href="#i-heart"/></svg> Cuidar faz bem.</span><span class="art-spark">✦</span></div>
+          <div class="hero-benefits"><span>✓ Busca simples</span><span>✓ Farmácias próximas</span></div>
+        </div>
+        <div class="auth-card">
+          <div class="auth-switch" role="group" aria-label="Opções de acesso"><button id="loginTab" class="selected" aria-pressed="true">Entrar</button><button id="registerTab" aria-pressed="false">Criar conta</button></div>
+          <h2 id="authTitle">Que bom ter você aqui.</h2>
+          <p class="muted small" id="authSubtitle">Entre para acompanhar seu cuidado.</p>
+          <form id="authForm">
+            <div id="nameGroup" hidden><label for="authName">Seu nome</label><input class="field" id="authName" name="name" autocomplete="name" placeholder="Como podemos chamar você?" maxlength="70"></div>
+            <label for="authEmail">E-mail</label><input class="field" id="authEmail" name="email" type="email" autocomplete="username" placeholder="voce@exemplo.com" required maxlength="150">
+            <div class="label-row"><label for="authPassword">Senha</label><button type="button" class="text-button" id="forgotPassword">Esqueci minha senha</button></div>
+            <div class="password-field"><input class="field" id="authPassword" name="password" type="password" autocomplete="current-password" placeholder="Pelo menos 8 caracteres" minlength="8" maxlength="128" required><button class="icon-button" type="button" id="togglePassword" aria-label="Mostrar senha" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg></button></div>
+            <div id="confirmGroup" hidden><label for="confirmPassword">Confirme sua senha</label><input class="field" id="confirmPassword" type="password" autocomplete="new-password" placeholder="Repita sua senha" maxlength="128"></div>
+            <p class="form-message small" id="authMessage" role="status" aria-live="polite"></p>
+            <button class="primary" id="authSubmit" type="submit">Entrar na minha conta <span aria-hidden="true">→</span></button>
+          </form>
+          <div class="auth-divider"><span>ou explore primeiro</span></div>
+          <button class="secondary guest-button" id="guestAccess">Continuar como visitante <span aria-hidden="true">→</span></button>
+          <p class="demo-access"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span>Ambiente de demonstração. Use dados fictícios.<br>Teste: <strong>demo@dosecerta.app</strong> · senha <strong>Dose1234</strong><br>Cadastros duram até recarregar a página.</span></p>
+        </div>
+      </section>
+      <!-- TELA 1: BUSCA -->
+      <section id="home" class="screen pad">
+        <div class="home-intro">
+        <div class="welcome-line"><span>SEU ESPAÇO DE CUIDADO</span><span class="location-chip"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg> Brasília · demo</span></div>
+        <p class="greeting" id="greeting">Olá, visitante <span aria-hidden="true">✦</span></p>
+        <h1 class="home-title">O que você precisa<br>para se cuidar hoje?</h1>
+        <p class="muted home-description">Seu medicamento, mais perto de você.</p>
+
+        <div class="search">
+          <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+          <input id="searchInput" type="search" value="losartana 50 mg"
+                 placeholder="Digite o medicamento" aria-label="Buscar medicamento">
+          <button id="clearSearch" aria-label="Limpar busca">×</button>
+        </div>
+
+        </div>
+        <div class="quick-actions"><button data-shortcut="mapScreen"><svg class="icon" aria-hidden="true"><use href="#i-store"/></svg><span>Farmácias<small>Encontre por perto</small></span><span aria-hidden="true">↗</span></button><button data-shortcut="orders"><svg class="icon" aria-hidden="true"><use href="#i-order"/></svg><span>Meus pedidos<small>Acompanhe por aqui</small></span><span aria-hidden="true">↗</span></button></div>
+        <div class="section-heading"><h2>Medicamentos</h2><span class="small muted">Catálogo demonstrativo</span></div>
+        <div id="results" aria-live="polite"></div>
+        <div class="care-note"><svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg><div><strong>Cuidar de você é prioridade.</strong><p>Conte com orientação de um farmacêutico para tirar suas dúvidas.</p></div></div>
+        <p class="small muted home-footnote">Consulte a disponibilidade nas farmácias próximas.</p>
+      </section>
+
+      <!-- TELA 2: MAPA -->
+      <section id="mapScreen" class="screen">
+        <div class="pad map-search">
+          <div class="search">
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+            <span id="mapMedicine"></span>
+          </div>
+        </div>
+
+        <div class="map" id="map">
+          <div class="park one"></div>
+          <div class="park two"></div>
+          <div class="location" role="img" aria-label="Localização ilustrativa"></div>
+          <span class="map-label">Mapa ilustrativo • localização simulada</span>
+        </div>
+
+        <div class="pad map-results">
+          <p class="small muted">Selecione uma farmácia para continuar.</p>
+          <div id="pharmacyList"></div>
+        </div>
+      </section>
+
+      <!-- TELA 3: FARMÁCIA -->
+      <section id="detail" class="screen">
+        <svg class="pharmacy-art" viewBox="0 0 430 190"
+             role="img" aria-label="Ilustração da fachada de uma farmácia">
+          <rect width="430" height="190" fill="#e6e9e9"/>
+          <rect x="25" y="20" width="380" height="170" fill="#cbd2d5"/>
+          <rect x="35" y="28" width="360" height="40" rx="3" fill="#980e29"/>
+          <text x="215" y="55" fill="white" text-anchor="middle"
+                font-family="Arial" font-size="20" font-weight="bold">FARMÁCIA +</text>
+          <rect x="40" y="76" width="350" height="114" fill="#edf5f7"/>
+          <g fill="#b6c5ca">
+            <rect x="55" y="94" width="95" height="5"/>
+            <rect x="55" y="123" width="95" height="5"/>
+            <rect x="55" y="152" width="95" height="5"/>
+            <rect x="280" y="94" width="95" height="5"/>
+            <rect x="280" y="123" width="95" height="5"/>
+            <rect x="280" y="152" width="95" height="5"/>
+          </g>
+          <g fill="#83ac9d">
+            <path d="M62 80h12v14H62zM97 80h16v14H97zM128 80h14v14h-14z"/>
+            <path d="M285 109h15v14h-15zM310 109h12v14h-12zM350 109h18v14h-18z"/>
+            <path d="M60 138h18v14H60zM91 138h14v14H91zM125 138h18v14h-18z"/>
+          </g>
+          <g fill="#b7737e">
+            <path d="M65 108h16v15H65zM93 108h13v15H93zM121 108h21v15h-21z"/>
+            <path d="M287 80h17v14h-17zM318 80h14v14h-14zM349 80h17v14h-17z"/>
+          </g>
+          <rect x="170" y="76" width="90" height="114" fill="#d7e6eb"
+                stroke="#8b9ca5" stroke-width="4"/>
+          <path d="M215 76v114M204 125v17M226 125v17"
+                stroke="#8b9ca5" stroke-width="3"/>
+          <path d="m176 81 72 100M45 80l111 103" stroke="white" opacity=".5" stroke-width="9"/>
+        </svg>
+
+        <div class="pad">
+          <h2 id="pharmacyName"></h2>
+          <p class="muted small" id="pharmacyAddress"></p>
+
+          <div class="row">
+            <span class="pill-box"><span class="pill"></span></span>
+            <span class="text">
+              <strong id="detailMedicine"></strong>
+              <span class="muted small">Comprimido • caixa com 30 unidades</span>
+            </span>
+          </div>
+
+          <p><span class="badge light">✓ Disponível</span></p>
+
+          <div class="detail-line">
+            <svg class="icon red" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg>
+            <strong id="distance"></strong>
+          </div>
+          <div class="detail-line">
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg>
+            <div><span class="muted small">Horário de funcionamento</span><br>08:00 às 22:00</div>
+          </div>
+          <p class="small muted">Dados fictícios para demonstração. A dispensação depende das exigências aplicáveis ao medicamento.</p>
+          <button class="primary" id="continue">Continuar</button>
+        </div>
+      </section>
+
+      <!-- TELA 4: RECEBIMENTO -->
+      <section id="receive" class="screen pad">
+        <h1 class="choice-title">Como você quer<br>receber?</h1>
+
+        <button class="choice" id="pickup">
+          <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-store"/></svg>
+          <strong>Retirar na farmácia <span>›</span></strong>
+          <span class="choice-description small muted">Acompanhe a preparação para retirada.</span>
+        </button>
+
+        <button class="choice" id="delivery" aria-controls="deliveryForm" aria-expanded="false">
+          <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-truck"/></svg>
+          <strong>Solicitar entrega <span>›</span></strong>
+          <span class="choice-description small muted">Informe um endereço para simular a entrega.</span>
+        </button>
+
+        <form id="deliveryForm" hidden>
+          <label for="address">Endereço de entrega</label>
+          <input class="field" id="address" placeholder="Rua, número e bairro"
+                 name="address" autocomplete="street-address" maxlength="180" required>
+          <label for="complement">Complemento (opcional)</label>
+          <input class="field" id="complement" placeholder="Apartamento, bloco..."
+                 name="complement" maxlength="100">
+          <button class="primary" type="submit">Confirmar entrega simulada</button>
+        </form>
+      </section>
+
+      <!-- TELA 5: ACOMPANHAMENTO -->
+      <section id="tracking" class="screen pad" aria-live="polite">
+        <div class="tracking-intro">
+        <div class="success-icon">✓</div>
+        <h1 class="center" id="trackingTitle" tabindex="-1">Pedido recebido</h1>
+        <p class="center small muted" id="orderNumber"></p>
+        </div>
+        <div class="timeline" id="timeline"></div>
+        <div class="summary" id="orderSummary"></div>
+        <div class="tracking-actions">
+        <button class="primary" id="advance">Avançar simulação</button>
+        <button class="secondary" id="newSearch">Buscar outro medicamento</button>
+        </div>
+      </section>
+
+      <section id="orders" class="screen pad">
+        <h1>Meus pedidos</h1>
+        <div id="ordersList"></div>
+      </section>
+
+      <section id="profile" class="screen pad">
+        <span class="eyebrow red">DO SEU JEITO</span><h1>Meu perfil</h1>
+        <div class="profile-card"><div class="profile-avatar" id="profileAvatar">V</div><h2 id="profileName">Visitante</h2><p class="muted" id="profileEmail">Explore o Dose Certa.</p><span class="badge light">Acesso demonstrativo</span></div>
+        <button class="primary" id="profileOrders">Ver meus pedidos</button><button class="secondary" id="signOut">Sair e voltar à entrada</button>
+        <p class="small muted">Ao sair, os pedidos e endereços desta sessão são apagados. Não há autenticação com um servidor nesta demonstração.</p>
+      </section>
+      <section id="notifications" class="screen pad"><span class="eyebrow red">FIQUE POR DENTRO</span><h1>Notificações</h1><div id="notificationsList"></div><button class="secondary" id="notificationOrders">Ver meus pedidos</button></section>
+      <section id="more" class="screen pad">
+        <h1>Sobre o Dose Certa</h1>
+        <p>Encontre medicamentos, consulte farmácias e escolha como receber.</p>
+        <div class="summary">
+          <strong>Versão demonstrativa</strong>
+          <p class="small muted">Este protótipo não consulta estoques reais, não realiza pagamentos e não envia pedidos a farmácias.</p>
+          <p class="small muted">Os pedidos permanecem somente enquanto esta página estiver aberta.</p>
+        </div>
+      </section>
+    </main>
+
+    <div class="demo" id="demoFooter" hidden>Protótipo acadêmico • dados simulados</div>
+
+    <nav id="mainNav" aria-label="Navegação principal" hidden>
+      <span class="sidebar-label">SEU ESPAÇO</span>
+      <button data-nav="home" class="active" aria-current="page">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>Buscar
+      </button>
+      <button data-nav="mapScreen">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg>Mapa
+      </button>
+      <button data-nav="orders">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-order"/></svg>Pedidos
+      </button>
+      <button data-nav="more">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-more"/></svg>Mais
+      </button>
+      <div class="sidebar-note"><svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg><strong>Cuidar faz bem.</strong><p>Um caminho mais simples para o seu bem-estar.</p><span>Dose Certa · demonstração</span></div>
+    </nav>
+  </div>
+
+
+</body>
+</html>
