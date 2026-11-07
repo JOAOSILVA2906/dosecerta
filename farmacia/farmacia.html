@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dose Certa | Painel da Farmácia</title>
+<link rel="stylesheet" href="farmacia.css">
+<script src="farmacia.js" defer></script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" class="svg-definitions" aria-hidden="true">
+  <symbol id="search" viewBox="0 0 24 24">
+    <circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="m15 15 6 6" stroke="currentColor" stroke-width="2"/>
+  </symbol>
+  <symbol id="cart" viewBox="0 0 24 24">
+    <path d="M2 3h3l3 13h11l3-10H6" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="9" cy="21" r="1.5" fill="currentColor"/>
+    <circle cx="18" cy="21" r="1.5" fill="currentColor"/>
+  </symbol>
+  <symbol id="box" viewBox="0 0 24 24">
+    <path d="m12 2 10 5v10l-10 5-10-5V7zM2 7l10 5 10-5M12 12v10M7 4.5l10 5"
+      fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="users" viewBox="0 0 24 24">
+    <circle cx="9" cy="7" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <path d="M2 22v-4a7 7 0 0 1 14 0v4M16 3a4 4 0 0 1 0 8M18 14a6 6 0 0 1 4 6v2"
+      fill="none" stroke="currentColor" stroke-width="1.8"/>
+  </symbol>
+  <symbol id="truck" viewBox="0 0 24 24">
+    <path d="M2 4h12v14H2zM14 9h4l4 5v4h-8"
+      fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <circle cx="6" cy="19" r="3" fill="currentColor"/>
+    <circle cx="18" cy="19" r="3" fill="currentColor"/>
+  </symbol>
+  <symbol id="chart" viewBox="0 0 24 24">
+    <path d="M4 22V12M10 22V5M16 22V9M22 22V1"
+      fill="none" stroke="currentColor" stroke-width="3"/>
+  </symbol>
+  <symbol id="icon-settings" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M12 1v4M12 19v4M1 12h4M19 12h4M4 4l3 3M17 17l3 3M4 20l3-3M17 7l3-3"
+      stroke="currentColor" stroke-width="3"/>
+  </symbol>
+  <symbol id="check" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="11" fill="#148348"/>
+    <path d="m6 12 4 4 8-9" fill="none" stroke="white" stroke-width="2"/>
+  </symbol>
+  <symbol id="clock" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M12 5v7l5 3" fill="none" stroke="currentColor" stroke-width="2"/>
+  </symbol>
+<symbol id="heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 12h4l2-4 2 8 2-4h4" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+</svg>
+
+<aside class="sidebar">
+  <div class="portal-id"><span class="eyebrow">SEU ESPAÇO DE GESTÃO</span><p>Portal da farmácia</p></div>
+
+  <nav class="menu" aria-label="Menu principal">
+    <button data-page="orders">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="#cart"/></svg>Pedidos
+    </button>
+    <button class="active" data-page="stock" aria-current="page">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="#box"/></svg>Estoque
+    </button>
+    <button data-page="clients">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="#users"/></svg>Clientes
+    </button>
+    <button data-page="deliveries">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="#truck"/></svg>Entregas
+    </button>
+    <button data-page="reports">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="#chart"/></svg>Relatórios
+    </button>
+    <button data-page="settings">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-settings"/></svg>Configurações
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <svg class="icon" aria-hidden="true"><use href="#heart"/></svg><strong>Cuidar faz bem.</strong>
+    <p>Seu estoque em dia.<br>Mais cuidado para todos.</p><span>Dose Certa · demonstração</span>
+  </div>
+</aside>
+
+<div class="shell">
+  <header class="topbar">
+    <a class="brand" href="farmacia.html" aria-label="Dose Certa — início do portal da farmácia"><span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#heart"/></svg></span><span class="brand-name">Dose<span>Certa</span><small>CUIDADO QUE CONECTA</small></span></a>
+    <div class="search">
+      <svg class="icon muted" aria-hidden="true" focusable="false"><use href="#search"/></svg>
+      <input id="searchInput" type="search"
+        aria-label="Buscar pedidos ou medicamentos"
+        placeholder="Buscar por pedido, cliente ou medicamento...">
+    </div>
+    <a class="client-link" href="../cliente/dose.html">Área do cliente <span aria-hidden="true">↗</span></a>
+    <button class="profile" data-open="settings" aria-label="Configurações da farmácia">
+      <div class="avatar">F</div>
+      <div class="profile-details">
+        <strong id="profileName">Farmácia Central</strong>
+        <small>Gerente</small>
+      </div>
+    </button>
+  </header>
+
+  <main>
+    <section id="orders" class="page">
+      <div class="heading">
+        <div>
+          <span class="eyebrow">CUIDADO EM MOVIMENTO</span><h1>Pedidos da farmácia</h1>
+          <p class="subtitle">Acompanhe e gerencie os pedidos da sua farmácia.</p>
+        </div>
+        <div class="actions">
+          <button class="btn light" id="filterToggle"
+            aria-expanded="false" aria-controls="filters">☷ Filtros</button>
+          <button class="btn" id="simulateOrder">+ Simular pedido</button>
+        </div>
+      </div>
+
+      <div class="filters" id="filters" hidden>
+        <label>Status
+          <select id="statusFilter">
+            <option value="">Todos</option>
+            <option value="pending">Aguardando confirmação</option>
+            <option value="separating">Em separação</option>
+            <option value="ready">Pronto para retirada</option>
+            <option value="transit">Em transporte</option>
+            <option value="done">Concluído</option>
+          </select>
+        </label>
+        <label>Recebimento
+          <select id="typeFilter">
+            <option value="">Todos</option>
+            <option value="delivery">Entrega</option>
+            <option value="pickup">Retirada</option>
+          </select>
+        </label>
+        <button class="btn light" id="clearFilters">Limpar filtros</button>
+      </div>
+
+      <div class="grid">
+        <div id="orderList"></div>
+        <aside class="panel">
+          <h2>Resumo do dia</h2>
+          <p class="summary-date" id="today"></p>
+          <div class="summary-stats" id="summaryStats"></div>
+          <button class="btn light full report-link" data-open="reports">
+            Ver relatório completo →
+          </button>
+        </aside>
+      </div>
+
+      <div class="panel stock-strip">
+        <div class="heading compact">
+          <h3>Situação do estoque</h3>
+          <button class="btn light" data-open="stock">Ver todo o estoque →</button>
+        </div>
+        <div id="stockPreview" class="stock-preview"></div>
+      </div>
+    </section>
+
+    <section id="stock" class="page active">
+      <div class="heading">
+        <div>
+          <span class="eyebrow">DISPONIBILIDADE QUE CONECTA</span>
+          <h1>Seu estoque, em dia.</h1>
+          <p class="subtitle">Atualize seus medicamentos e prepare sua farmácia para cuidar melhor.</p>
+        </div>
+        <button class="btn" id="addMedicine">+ Cadastrar medicamento</button>
+      </div>
+      <div class="inventory-metrics" id="inventoryMetrics"></div>
+      <div class="inventory-banner"><span class="banner-icon"><svg class="icon" aria-hidden="true"><use href="#heart"/></svg></span><div><strong>Uma atualização faz a diferença.</strong><p>Mantenha as quantidades em dia. Zero caixas indica que o medicamento está indisponível neste painel.</p></div><span class="demo-chip">Estoque demonstrativo</span></div>
+      <div class="inventory-toolbar"><div><h2>Seus medicamentos</h2><span class="muted small" id="stockResultCount"></span></div><label for="stockFilter">Disponibilidade <select id="stockFilter"><option value="">Todos os medicamentos</option><option value="good">Em estoque</option><option value="low">Estoque baixo</option><option value="empty">Sem estoque</option></select></label></div>
+      <div class="panel table-wrap inventory-table" tabindex="0" role="region" aria-label="Estoque de medicamentos">
+        <table>
+          <thead>
+            <tr><th scope="col">Medicamento</th><th scope="col">Apresentação</th><th scope="col">Situação</th><th scope="col">Caixas disponíveis</th><th scope="col">Ação</th></tr>
+          </thead>
+          <tbody id="stockTable"></tbody>
+        </table>
+      </div>
+      <p class="small muted">Confirmar um pedido reserva uma caixa e reduz o estoque disponível.</p>
+    </section>
+
+    <section id="clients" class="page">
+      <div class="heading">
+        <div><h1>Clientes</h1><p class="subtitle">Clientes dos pedidos demonstrativos.</p></div>
+      </div>
+      <div class="panel table-wrap" tabindex="0" role="region" aria-label="Tabela de clientes">
+        <table>
+          <thead><tr><th scope="col">Cliente</th><th scope="col">Região</th><th scope="col">Pedidos</th><th scope="col">Último pedido</th></tr></thead>
+          <tbody id="clientsTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="deliveries" class="page">
+      <div class="heading">
+        <div><h1>Entregas</h1><p class="subtitle">Acompanhe os pedidos com entrega em domicílio.</p></div>
+      </div>
+      <div id="deliveryList"></div>
+    </section>
+
+    <section id="reports" class="page">
+      <div class="heading">
+        <div><h1>Relatório do dia</h1><p class="subtitle">Indicadores calculados a partir dos pedidos cadastrados hoje.</p></div>
+        <div class="actions">
+          <button class="btn light" id="printReport">Imprimir / PDF</button>
+          <button class="btn" id="exportCSV">Exportar CSV</button>
+        </div>
+      </div>
+      <div class="metrics" id="reportMetrics"></div>
+      <div class="panel">
+        <h2>Pedidos por etapa</h2>
+        <div id="reportBars"></div>
+      </div>
+    </section>
+
+    <section id="settings" class="page">
+      <div class="heading">
+        <div><h1>Configurações</h1><p class="subtitle">Personalize a identificação da farmácia.</p></div>
+      </div>
+      <form id="settingsForm" class="panel settings-form">
+        <label for="storeName">Nome da farmácia</label>
+        <input id="storeName" class="field" required maxlength="70">
+        <label for="storeAddress">Endereço</label>
+        <input id="storeAddress" class="field" required maxlength="180">
+        <button class="btn" type="submit">Salvar configurações</button>
+      </form>
+      <div class="panel reset-panel">
+        <h3>Dados demonstrativos</h3>
+        <p class="muted">Reiniciar apaga as alterações deste painel e recria os exemplos.</p>
+        <button class="btn outline" id="resetDemo">Reiniciar demonstração</button>
+      </div>
+    </section>
+
+    <p class="notice">
+      Ambiente demonstrativo · dados fictícios · sem conexão com clientes ou farmácias reais.
+    </p>
+  </main>
+</div>
+
+<dialog id="medicineDialog" aria-labelledby="medicineDialogTitle">
+  <div class="dialog-heading"><div><span class="eyebrow">AMPLIE SEU CATÁLOGO</span><h2 id="medicineDialogTitle">Novo medicamento</h2></div><button class="close-dialog" id="closeMedicine" type="button" aria-label="Fechar cadastro">×</button></div>
+  <p class="muted small">Cadastre um item para gerenciar sua disponibilidade neste painel.</p>
+  <form id="medicineForm">
+    <label for="medicineName">Medicamento e dosagem</label><input class="field" id="medicineName" placeholder="Ex.: Losartana 50 mg" maxlength="100" required>
+    <label for="medicinePack">Apresentação</label><input class="field" id="medicinePack" placeholder="Ex.: 30 comprimidos" maxlength="100" required>
+    <label for="medicineQuantity">Quantidade de caixas</label><input class="field" id="medicineQuantity" type="number" min="0" max="100000" step="1" value="0" required>
+    <p id="medicineError" class="form-error" role="status"></p>
+    <div class="actions"><button class="btn light" type="button" id="cancelMedicine">Cancelar</button><button class="btn" type="submit">Cadastrar medicamento</button></div>
+  </form>
+</dialog>
+<noscript>Ative o JavaScript para gerenciar o estoque e os pedidos demonstrativos.</noscript>
+<div id="toast" role="status" hidden></div>
+
+
+</body>
+</html>
