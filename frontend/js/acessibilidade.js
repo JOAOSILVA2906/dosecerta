@@ -105,7 +105,7 @@
   /* ---------- guia de leitura ---------- */
 
   const guia = document.createElement("div");
-  guia.className = "a11y-guia";
+  guia.className = "a11y-faixa";
   guia.hidden = true;
   guia.setAttribute("aria-hidden", "true");
   document.addEventListener("mousemove", e => {

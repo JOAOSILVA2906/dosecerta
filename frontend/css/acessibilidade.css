@@ -75,7 +75,7 @@
 .a11y-rodape { margin: 12px 0 0; font-size: 11px; color: #5b6573; line-height: 1.5; }
 kbd { border: 1px solid #c9d2de; border-radius: 4px; padding: 1px 5px; background: #f3f6fa; font-size: 11px; }
 
-.a11y-guia {
+.a11y-faixa {
   position: fixed;
   left: 0;
   right: 0;
@@ -152,7 +152,7 @@ html.a11y-contraste a { text-decoration: underline !important; }
 html.a11y-contraste :focus-visible { outline: 4px solid #000 !important; outline-offset: 3px !important; }
 
 /* Modo escuro */
-html.a11y-escuro body > *:not(.a11y-painel):not(.a11y-botao):not(.a11y-guia):not(.a11y-pular) { filter: invert(.9) hue-rotate(180deg); }
+html.a11y-escuro body > *:not(.a11y-painel):not(.a11y-botao):not(.a11y-faixa):not(.a11y-pular) { filter: invert(.9) hue-rotate(180deg); }
 html.a11y-escuro body { background: #161616 !important; }
 html.a11y-escuro img, html.a11y-escuro .leaflet-tile-pane, html.a11y-escuro .pharmacy-art { filter: invert(1) hue-rotate(180deg); }
 
@@ -162,5 +162,5 @@ html.a11y-escuro img, html.a11y-escuro .leaflet-tile-pane, html.a11y-escuro .pha
 }
 
 @media print {
-  .a11y-botao, .a11y-painel, .a11y-guia, .a11y-pular { display: none !important; }
+  .a11y-botao, .a11y-painel, .a11y-faixa, .a11y-pular { display: none !important; }
 }
