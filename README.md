@@ -1,55 +1,85 @@
-# Dose Certa — protótipo
+# Dose Certa
 
-> Busca de medicamentos em farmácias próximas, com retirada no balcão ou entrega. Protótipo acadêmico com duas interfaces: a **área do cliente** e o **portal da farmácia**.
+Site para encontrar medicamentos nas farmácias do Distrito Federal, comparar preços e escolher entre retirar na loja ou receber em casa. Tem duas partes: o app do cliente e o portal da farmácia, que funcionam juntos.
 
-Front-end feito com **HTML, CSS e JavaScript puro**, sem frameworks, bibliotecas ou back-end. Os dados são fictícios.
+**Acesse online:** https://joaosilva2906.github.io/dosecerta/
 
-## Como abrir
+## Páginas
 
-Abra o [`index.html`](index.html) no navegador e escolha uma das áreas. Também dá pra abrir cada uma direto:
+| Página | O que tem |
+| --- | --- |
+| [`index.html`](index.html) | Página inicial com busca, como funciona e mapa das farmácias parceiras |
+| [`cliente.html`](cliente.html) | Login e cadastro, catálogo com 45 medicamentos, mapa das farmácias, compra com retirada ou entrega, acompanhamento do pedido |
+| [`farmacia.html`](farmacia.html) | Pedidos em tempo real, estoque, clientes, mapa de entregas, relatório do dia (CSV/PDF) e configurações |
 
-| Área | Arquivo | O que faz |
-| --- | --- | --- |
-| Cliente | [`cliente/dose.html`](cliente/dose.html) | Login/cadastro demo, busca de medicamentos, mapa de farmácias, retirada ou entrega e acompanhamento do pedido |
-| Farmácia | [`farmacia/farmacia.html`](farmacia/farmacia.html) | Estoque, pedidos, clientes, entregas, relatório (CSV/PDF) e configurações |
+Conta de teste do cliente: `demo@dosecerta.app` · senha `Dose1234` (também dá para criar uma conta ou entrar sem cadastro).
 
-Login de teste na área do cliente: `demo@dosecerta.app` · senha `Dose1234`.
+## Como testar o fluxo completo
 
-Para servir localmente:
+1. Abra `cliente.html` em uma aba e `farmacia.html` em outra.
+2. No cliente, busque um medicamento, escolha a farmácia **Farmácia Central** e finalize o pedido.
+3. O pedido aparece na hora no portal da farmácia. Clique em **Confirmar pedido** e depois em **Despachar entrega** ou **Liberar para retirada**.
+4. A tela de acompanhamento do cliente atualiza sozinha, com o entregador andando no mapa.
+
+Se ninguém mexer no portal, a farmácia avança o pedido automaticamente depois de alguns segundos.
+
+## Funcionalidades
+
+- Mapa real (OpenStreetMap) com as farmácias, distância calculada a partir da sua localização e link de rota no Google Maps
+- Preço e estoque diferentes em cada farmácia, horário de funcionamento (aberta/fechada agora) e avaliação
+- Busca sem diferenciar acentos, filtro por categoria e ordenação por distância, preço ou avaliação
+- CEP preenche o endereço sozinho (ViaCEP) e a taxa de entrega é calculada pela distância
+- Envio de receita para medicamentos de tarja vermelha e antibióticos
+- Pagamento por Pix, cartão ou dinheiro com troco
+- Código de retirada, notificações e histórico de pedidos
+- Portal: baixa automática do estoque ao confirmar pedido, cadastro de medicamentos (aparece na busca do cliente), mapa das entregas e relatório exportável
+- Layout responsivo para celular, tablet e computador
+
+## Estrutura
+
+```
+dosecerta/
+├── index.html        página inicial
+├── cliente.html      app do cliente
+├── farmacia.html     portal da farmácia
+├── css/
+│   ├── inicio.css
+│   ├── cliente.css
+│   ├── farmacia.css
+│   └── mapa.css      marcadores do mapa (usado pelas três páginas)
+├── js/
+│   ├── dados.js      catálogo, farmácias, estoque e pedidos (compartilhado)
+│   ├── mapa.js       funções do mapa
+│   ├── inicio.js
+│   ├── cliente.js
+│   └── farmacia.js
+└── img/
+    └── favicon.svg
+```
+
+## Tecnologias
+
+HTML, CSS e JavaScript puro. Bibliotecas e serviços externos:
+
+- [Leaflet](https://leafletjs.com/) para os mapas, com mapas do [OpenStreetMap](https://www.openstreetmap.org/)
+- [ViaCEP](https://viacep.com.br/) para buscar o endereço pelo CEP
+- [Nominatim](https://nominatim.org/) para localizar o endereço no mapa
+
+Os mapas e o CEP precisam de internet. O resto funciona offline.
+
+## Rodar no computador
+
+Basta abrir o `index.html` no navegador. Para a localização funcionar, é melhor servir os arquivos:
 
 ```bash
 python -m http.server 8000
 # depois abra http://localhost:8000
 ```
 
-## Estrutura
+## Observações
 
-```
-dosecerta/
-├── index.html            página inicial (escolha da área)
-├── cliente/
-│   ├── dose.html         telas e ícones
-│   ├── dose.css          estilos e responsividade
-│   ├── dose.js           busca, navegação e pedidos simulados
-│   └── README.md
-├── farmacia/
-│   ├── farmacia.html     painel e diálogos
-│   ├── farmacia.css      estilos e responsividade
-│   ├── farmacia.js       estoque, pedidos e relatórios
-│   └── README.md
-├── LICENSE
-└── README.md
-```
-
-Cada pasta tem um README com mais detalhes.
-
-## Limites
-
-- As duas áreas **não estão conectadas**: um pedido feito no cliente não aparece na farmácia.
-- Cliente: pedidos e cadastros ficam só na memória da aba e somem ao recarregar.
-- Farmácia: as alterações ficam no `localStorage` do navegador.
-- Sem pagamentos, estoque real ou autenticação de verdade. Para produção seria preciso um serviço no servidor.
+Não existe servidor: contas, pedidos e estoque ficam salvos no `localStorage` do navegador. Por isso o cliente e a farmácia só se enxergam no mesmo navegador. Para voltar ao estado inicial, use **Configurações → Restaurar dados iniciais** no portal da farmácia.
 
 ## Licença
 
-MIT — veja [LICENSE](LICENSE).
+MIT. Veja [LICENSE](LICENSE).
