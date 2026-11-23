@@ -11,3 +11,14 @@ desktop.ini
 # Dependências / logs
 node_modules/
 *.log
+
+# Configuração local e segredos
+.env
+.env.*
+!.env.example
+
+# Banco de dados (gerado pelo servidor; contém contas e pedidos)
+backend/dados/
+*.db
+*.db-shm
+*.db-wal

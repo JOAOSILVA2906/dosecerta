@@ -1,0 +1,16 @@
+{
+  "name": "dosecerta",
+  "version": "2.0.0",
+  "description": "Busca de medicamentos em farmácias do DF, com app do cliente, portal da farmácia e API com banco de dados.",
+  "private": true,
+  "license": "MIT",
+  "main": "backend/servidor.js",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node backend/servidor.js",
+    "resetar": "node backend/scripts/resetar-banco.js",
+    "test": "node --test backend/testes/"
+  }
+}

@@ -2,105 +2,10 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Dose Certa: encontre medicamentos nas farmácias do Distrito Federal, compare preços e receba em casa ou retire na loja.">
-  <meta name="theme-color" content="#941d3e">
-  <title>Dose Certa | Seu medicamento, mais perto de você</title>
-  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-  <link rel="stylesheet" href="css/mapa.css">
-  <link rel="stylesheet" href="css/inicio.css">
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
-  <script src="js/dados.js" defer></script>
-  <script src="js/mapa.js" defer></script>
-  <script src="js/inicio.js" defer></script>
+  <meta http-equiv="refresh" content="0; url=frontend/index.html">
+  <title>Dose Certa</title>
 </head>
 <body>
-  <svg xmlns="http://www.w3.org/2000/svg" class="svg-definitions" aria-hidden="true">
-    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 12h4l2-4 2 8 2-4h4" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
-    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m15 15 6 6" stroke="currentColor" stroke-width="2"/></symbol>
-    <symbol id="i-store" viewBox="0 0 24 24"><path d="M3 10v11h18V10M2 9l2-6h16l2 6M2 9q2 4 5 0 2 4 5 0 2 4 5 0 3 4 5 0M9 21v-8h6v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
-    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 4h12v14H2zM14 9h4l4 5v4h-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="6" cy="19" r="3" fill="currentColor"/><circle cx="18" cy="19" r="3" fill="currentColor"/></symbol>
-    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 1a8 8 0 0 0-8 8c0 6 8 14 8 14s8-8 8-14a8 8 0 0 0-8-8Z" fill="currentColor"/><circle cx="12" cy="9" r="3" fill="white"/></symbol>
-    <symbol id="i-box" viewBox="0 0 24 24"><path d="m12 2 10 5v10l-10 5-10-5V7zM2 7l10 5 10-5M12 12v10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
-  </svg>
-
-  <header class="site-header">
-    <a class="brand" href="index.html"><span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg></span><span class="brand-name">Dose<span>Certa</span><small>CUIDADO QUE CONECTA</small></span></a>
-    <nav class="site-nav" aria-label="Seções da página">
-      <a href="#como-funciona">Como funciona</a>
-      <a href="#farmacias">Farmácias</a>
-      <a href="#parceiros">Para farmácias</a>
-    </nav>
-    <div class="header-buttons">
-      <a class="button light" href="farmacia.html">Sou farmácia</a>
-      <a class="button" href="cliente.html">Entrar</a>
-    </div>
-  </header>
-
-  <main>
-    <section class="hero">
-      <div class="hero-text">
-        <span class="eyebrow">MAIS PERTO DO SEU BEM-ESTAR</span>
-        <h1>Seu remédio.<br>Na <em>dose certa.</em></h1>
-        <p>Encontre o medicamento que você precisa nas farmácias do Distrito Federal, compare preços e escolha entre retirar na loja ou receber em casa.</p>
-        <form class="hero-search" action="cliente.html" method="get" role="search">
-          <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
-          <input name="busca" type="search" placeholder="Qual remédio você procura?" aria-label="Buscar medicamento" maxlength="80">
-          <button type="submit">Buscar</button>
-        </form>
-        <p class="popular">Mais buscados: <a href="cliente.html?busca=dipirona">Dipirona</a> · <a href="cliente.html?busca=losartana">Losartana</a> · <a href="cliente.html?busca=loratadina">Loratadina</a> · <a href="cliente.html?busca=vitamina">Vitaminas</a></p>
-      </div>
-      <div class="hero-art" aria-hidden="true">
-        <span class="art-orbit"></span><span class="art-cross">+</span><span class="art-capsule"></span>
-        <span class="art-card"><svg class="icon"><use href="#i-heart"/></svg> Cuidar faz bem.</span>
-        <span class="art-spark">✦</span>
-        <span class="art-tag one"><svg class="icon"><use href="#i-truck"/></svg> Saiu para entrega</span>
-        <span class="art-tag two"><svg class="icon"><use href="#i-pin"/></svg> 1,2 km de você</span>
-      </div>
-    </section>
-
-    <section class="numbers" aria-label="Dose Certa em números">
-      <div><strong id="countMedicines">45</strong><span>medicamentos no catálogo</span></div>
-      <div><strong id="countPharmacies">8</strong><span>farmácias parceiras no DF</span></div>
-      <div><strong>2</strong><span>regiões com plantão 24 horas</span></div>
-      <div><strong>R$ 80</strong><span>frete grátis a partir de</span></div>
-    </section>
-
-    <section class="steps" id="como-funciona">
-      <span class="eyebrow">COMO FUNCIONA</span>
-      <h2>Do sintoma à porta de casa em três passos</h2>
-      <div class="step-grid">
-        <article><span class="step-number">1</span><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><h3>Busque</h3><p>Digite o nome ou o princípio ativo e veja quais farmácias têm o medicamento agora.</p></article>
-        <article><span class="step-number">2</span><svg class="icon" aria-hidden="true"><use href="#i-store"/></svg><h3>Compare</h3><p>Veja preço, distância, horário e avaliação de cada loja no mapa e escolha a melhor.</p></article>
-        <article><span class="step-number">3</span><svg class="icon" aria-hidden="true"><use href="#i-truck"/></svg><h3>Receba</h3><p>Retire no balcão com um código ou receba em casa, acompanhando o entregador em tempo real.</p></article>
-      </div>
-    </section>
-
-    <section class="partners-map" id="farmacias">
-      <div class="map-intro">
-        <span class="eyebrow">ONDE ESTAMOS</span>
-        <h2>Farmácias parceiras no Distrito Federal</h2>
-        <p>De Ceilândia à Asa Sul, com lojas abertas 24 horas no Guará e na Asa Sul.</p>
-        <ul class="pharmacy-list" id="pharmacyList"></ul>
-      </div>
-      <div class="home-map" id="homeMap" role="region" aria-label="Mapa das farmácias parceiras"></div>
-    </section>
-
-    <section class="partner-cta" id="parceiros">
-      <div>
-        <span class="eyebrow">PARA FARMÁCIAS</span>
-        <h2>Receba pedidos do app e mantenha seu estoque visível para quem está perto.</h2>
-        <p>Portal com pedidos em tempo real, controle de estoque, mapa de entregas e relatório diário.</p>
-      </div>
-      <a class="button" href="farmacia.html">Acessar portal do parceiro →</a>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="brand small-brand"><span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg></span><span class="brand-name">Dose<span>Certa</span></span></div>
-    <p>Medicamentos de venda sob prescrição só são liberados com apresentação da receita. Em caso de dúvida, procure orientação médica ou farmacêutica.</p>
-    <p class="copyright">© 2026 Dose Certa · Brasília, DF</p>
-  </footer>
+  <p><a href="frontend/index.html">Abrir o Dose Certa</a></p>
 </body>
 </html>

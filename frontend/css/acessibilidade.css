@@ -1,0 +1,166 @@
+/* Painel e modos de acessibilidade (usado pelas três páginas) */
+
+.a11y-pular {
+  position: fixed;
+  left: 12px;
+  top: -60px;
+  z-index: 3000;
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: #941d3e;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+.a11y-pular:focus { top: 12px; outline: 3px solid #579bf0; }
+
+.a11y-botao {
+  position: fixed;
+  right: 16px;
+  bottom: calc(96px + env(safe-area-inset-bottom));
+  z-index: 2500;
+  width: 54px;
+  height: 54px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: #1f4f9c;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 8px 22px #0003;
+}
+.a11y-botao svg { width: 30px; height: 30px; }
+.a11y-botao:hover { background: #17407e; }
+.a11y-botao:focus-visible { outline: 3px solid #f5b400; outline-offset: 3px; }
+
+.a11y-painel {
+  position: fixed;
+  right: 16px;
+  bottom: calc(160px + env(safe-area-inset-bottom));
+  z-index: 2500;
+  width: min(380px, calc(100vw - 32px));
+  max-height: calc(100dvh - 190px);
+  overflow-y: auto;
+  padding: 18px;
+  border-radius: 20px;
+  background: #fff;
+  color: #1c2430;
+  border: 1px solid #d9dee6;
+  box-shadow: 0 24px 60px #0003;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 14px;
+  zoom: 1 !important;
+}
+.a11y-painel[hidden] { display: none; }
+.a11y-topo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.a11y-topo strong { font-size: 18px; }
+.a11y-fechar { width: 36px; height: 36px; border-radius: 50%; border: 0; background: #eef2f7; font-size: 22px; cursor: pointer; color: #1c2430; }
+.a11y-tamanho { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 14px; background: #f3f6fa; margin-bottom: 12px; font-weight: 600; }
+.a11y-tamanho div { display: flex; align-items: center; gap: 8px; }
+.a11y-tamanho button { min-width: 46px; height: 40px; border-radius: 10px; border: 1px solid #c9d2de; background: #fff; font-weight: 700; font-size: 15px; cursor: pointer; color: #1c2430; }
+.a11y-tamanho output { min-width: 46px; text-align: center; font-weight: 700; }
+.a11y-grade { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.a11y-opcao { text-align: left; padding: 11px 12px; border-radius: 12px; border: 1px solid #d3dae4; background: #fff; cursor: pointer; color: #1c2430; font: inherit; }
+.a11y-opcao strong { display: block; font-size: 13px; }
+.a11y-opcao small { display: block; font-size: 11px; color: #5b6573; margin-top: 3px; line-height: 1.35; }
+.a11y-opcao[aria-pressed="true"] { border: 2px solid #1f4f9c; background: #e8f0fc; padding: 10px 11px; }
+.a11y-opcao[aria-pressed="true"] strong::before { content: "✓ "; color: #1f4f9c; }
+.a11y-acoes { display: grid; gap: 8px; margin-top: 12px; }
+.a11y-acoes button { padding: 12px; border-radius: 12px; border: 1px solid #c9d2de; background: #f3f6fa; font: inherit; font-weight: 600; cursor: pointer; color: #1c2430; }
+.a11y-acoes button:hover, .a11y-opcao:hover { border-color: #1f4f9c; }
+.a11y-painel button:focus-visible { outline: 3px solid #f5b400; outline-offset: 2px; }
+.a11y-aviso { margin: 10px 0 0; color: #1f4f9c; font-weight: 600; }
+.a11y-aviso:empty { display: none; }
+.a11y-rodape { margin: 12px 0 0; font-size: 11px; color: #5b6573; line-height: 1.5; }
+kbd { border: 1px solid #c9d2de; border-radius: 4px; padding: 1px 5px; background: #f3f6fa; font-size: 11px; }
+
+.a11y-guia {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 44px;
+  z-index: 2400;
+  pointer-events: none;
+  background: #f5b40026;
+  border-top: 2px solid #f5b400;
+  border-bottom: 2px solid #f5b400;
+  box-shadow: 0 0 0 100vmax #0000002e;
+}
+
+/* ---------- modos ---------- */
+
+html.a11y-zoom body { zoom: var(--a11y-zoom); }
+html.a11y-zoom .a11y-painel, html.a11y-zoom .a11y-botao { zoom: calc(1 / var(--a11y-zoom)); }
+
+html.a11y-legivel body, html.a11y-legivel button, html.a11y-legivel input, html.a11y-legivel select {
+  font-family: "Atkinson Hyperlegible", Verdana, Tahoma, sans-serif !important;
+}
+
+html.a11y-espacamento body * {
+  letter-spacing: .06em !important;
+  word-spacing: .16em !important;
+  line-height: 1.8 !important;
+}
+
+html.a11y-links a { text-decoration: underline !important; text-underline-offset: 3px; }
+html.a11y-links button:not(.a11y-botao), html.a11y-links a { outline: 2px dashed #1f4f9c; outline-offset: 2px; }
+
+html.a11y-alvos button:not(.a11y-botao):not(.a11y-fechar), html.a11y-alvos a, html.a11y-alvos select, html.a11y-alvos input:not([type="radio"]):not([type="checkbox"]) {
+  min-height: 56px !important;
+  min-width: 56px;
+}
+html.a11y-alvos input[type="radio"], html.a11y-alvos input[type="checkbox"] { transform: scale(1.5); }
+
+html.a11y-cursor, html.a11y-cursor * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24'%3E%3Cpath d='M3 2l7 19 2.5-7.5L20 11z' fill='%23000' stroke='%23fff' stroke-width='1.5'/%3E%3C/svg%3E") 4 2, auto !important;
+}
+
+html.a11y-pausar *, html.a11y-pausar *::before, html.a11y-pausar *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+html.a11y-cinza body > *:not(.a11y-painel):not(.a11y-botao) { filter: grayscale(1); }
+
+html.a11y-simples .care-art, html.a11y-simples .hero-art, html.a11y-simples .art-spark, html.a11y-simples .sidebar-note,
+html.a11y-simples .sidebar-footer, html.a11y-simples .care-note, html.a11y-simples .inventory-banner, html.a11y-simples .pharmacy-art,
+html.a11y-simples .hero-benefits, html.a11y-simples .greeting span, html.a11y-simples .numbers {
+  display: none !important;
+}
+
+/* Alto contraste: texto preto, bordas fortes, cor de destaque mais escura */
+html.a11y-contraste { --red: #6b0021; --red-dark: #4a0016; --muted: #1a1a1a; --ink: #000; --line: #000; }
+html.a11y-contraste body, html.a11y-contraste body :where(*:not(svg, svg *, .leaflet-tile, .a11y-painel, .a11y-painel *)) {
+  color: #000 !important;
+  border-color: #000 !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+html.a11y-contraste body, html.a11y-contraste .app, html.a11y-contraste main { background: #fff !important; }
+html.a11y-contraste .primary, html.a11y-contraste .btn:not(.light):not(.outline), html.a11y-contraste .button:not(.light),
+html.a11y-contraste .chip.selected, html.a11y-contraste .badge:not(.light):not(.off), html.a11y-contraste .brand-mark,
+html.a11y-contraste .toast, html.a11y-contraste #toast, html.a11y-contraste .menu-count, html.a11y-contraste .success-icon:not(.waiting),
+html.a11y-contraste .step.done .dot, html.a11y-contraste .hero-search button {
+  background: #000 !important;
+  color: #fff !important;
+}
+html.a11y-contraste .primary *, html.a11y-contraste .btn:not(.light):not(.outline) *, html.a11y-contraste .chip.selected,
+html.a11y-contraste .brand-mark *, html.a11y-contraste .button:not(.light) * { color: #fff !important; }
+html.a11y-contraste a { text-decoration: underline !important; }
+html.a11y-contraste :focus-visible { outline: 4px solid #000 !important; outline-offset: 3px !important; }
+
+/* Modo escuro */
+html.a11y-escuro body > *:not(.a11y-painel):not(.a11y-botao):not(.a11y-guia):not(.a11y-pular) { filter: invert(.9) hue-rotate(180deg); }
+html.a11y-escuro body { background: #161616 !important; }
+html.a11y-escuro img, html.a11y-escuro .leaflet-tile-pane, html.a11y-escuro .pharmacy-art { filter: invert(1) hue-rotate(180deg); }
+
+@media (min-width: 900px) {
+  .a11y-botao { bottom: 24px; }
+  .a11y-painel { bottom: 90px; }
+}
+
+@media print {
+  .a11y-botao, .a11y-painel, .a11y-guia, .a11y-pular { display: none !important; }
+}
