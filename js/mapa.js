@@ -2,8 +2,34 @@
 window.Mapa = (() => {
   "use strict";
 
-  const TILES = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
-  const CREDITOS = '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>';
+  // Esri como principal: funciona até abrindo o arquivo direto (o OpenStreetMap bloqueia alguns casos).
+  // Se a Esri falhar, troca sozinho para o OpenStreetMap.
+  const PROVEDORES = [
+    {
+      url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+      creditos: 'Mapa &copy; <a href="https://www.esri.com/" target="_blank" rel="noopener">Esri</a>, HERE, Garmin, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
+    },
+    {
+      url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+      creditos: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
+    }
+  ];
+
+  function adicionarCamada(mapa, indice = 0) {
+    const provedor = PROVEDORES[indice];
+    const camada = L.tileLayer(provedor.url, { attribution: provedor.creditos, maxZoom: 19 });
+    let falhas = 0;
+    let carregou = false;
+    camada.on("tileload", () => { carregou = true; });
+    camada.on("tileerror", () => {
+      falhas++;
+      if (!carregou && falhas >= 3 && PROVEDORES[indice + 1]) {
+        mapa.removeLayer(camada);
+        adicionarCamada(mapa, indice + 1);
+      }
+    });
+    camada.addTo(mapa);
+  }
 
   const disponivel = () => typeof window.L !== "undefined";
 
@@ -16,7 +42,7 @@ window.Mapa = (() => {
     const mapa = L.map(elemento, { zoomControl: false, scrollWheelZoom: false, attributionControl: true })
       .setView([centro.lat, centro.lng], zoom);
     L.control.zoom({ position: "bottomright" }).addTo(mapa);
-    L.tileLayer(TILES, { attribution: CREDITOS, maxZoom: 19 }).addTo(mapa);
+    adicionarCamada(mapa);
     mapa.attributionControl.setPrefix(false);
     // Rolagem do mouse só depois de clicar no mapa, para não atrapalhar a rolagem da página
     mapa.on("click", () => mapa.scrollWheelZoom.enable());
