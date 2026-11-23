@@ -404,8 +404,9 @@ dialog::backdrop { background: #31232d66; }
   .order { padding: 19px; }
   .order-top { gap: 10px; }
   .time { width: 100%; margin: 0; }
-  .person { min-width: 0; width: 100%; }
-  .person > div:last-child { min-width: 0; overflow-wrap: anywhere; }
+  .order-body .product-art { display: none; }
+  .person, .fulfillment { flex: 1 1 100%; min-width: 0; }
+  .person > div:last-child { flex: 1; min-width: 0; overflow-wrap: anywhere; }
   .fulfillment { border: 0; padding: 10px 0; width: 100%; }
   .order-action { width: 100%; margin-left: 0; }
   .order-action .btn { flex: 1; }
