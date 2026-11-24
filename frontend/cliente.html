@@ -36,7 +36,8 @@
     <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 21v-2a8 8 0 0 1 16 0v2" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
     <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
     <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 10V6a4 4 0 0 1 8 0v4M12 14v3" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
-    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.2 8 11 4.6-1.8 8-6 8-11V5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 8v7M8.5 11.5h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-eye"viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
   </svg>
 
   <noscript>Ative o JavaScript no navegador para usar o Dose Certa.</noscript>
@@ -149,7 +150,7 @@
         <div class="pad">
           <h2 id="pharmacyName"></h2>
           <p class="muted small" id="pharmacyAddress"></p>
-          <div class="pharmacy-meta"><span class="rating" id="pharmacyRating"></span><span class="open-status" id="pharmacyOpen"></span></div>
+          <div class="pharmacy-meta"><span class="rating" id="pharmacyRating"></span><span class="open-status" id="pharmacyOpen"></span><span class="popular-seal" id="pharmacyPopular" hidden>✓ Aqui tem Farmácia Popular</span></div>
 
           <div class="product-box" id="productBox">
             <div class="row">
@@ -268,6 +269,29 @@
         </div>
       </section>
 
+      <!-- Farmácia Popular -->
+      <section id="popular" class="screen pad">
+        <span class="eyebrow red">PROGRAMA DO GOVERNO FEDERAL</span>
+        <h1>Farmácia Popular</h1>
+        <p class="muted popular-intro">Medicamentos de graça nas farmácias credenciadas. Veja quais unidades perto de você participam e onde o remédio está disponível agora.</p>
+        <div class="popular-steps">
+          <div><strong>1</strong><span>Documento oficial com foto e o número do CPF</span></div>
+          <div><strong>2</strong><span>Receita médica do SUS ou particular, dentro da validade</span></div>
+          <div><strong>3</strong><span>Uma farmácia com o selo "Aqui Tem Farmácia Popular"</span></div>
+        </div>
+        <h2 class="list-title">Medicamentos do programa</h2>
+        <div class="popular-meds" id="popularMeds" role="group" aria-label="Escolha um medicamento para ver onde tem"></div>
+        <h2 class="list-title">Farmácias credenciadas</h2>
+        <div class="popular-layout">
+          <div class="popular-map" id="popularMap" role="region" aria-label="Mapa das farmácias credenciadas"></div>
+          <div>
+            <p class="small muted" id="popularHint" aria-live="polite"></p>
+            <div id="popularList"></div>
+          </div>
+        </div>
+        <div class="care-note"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg><div><strong>Como retirar de graça</strong><p>A retirada gratuita é feita no balcão da farmácia, com documento e receita. Pedidos feitos pelo Dose Certa seguem o preço normal da loja. O estoque é informado pelas farmácias e pode mudar. A lista completa de medicamentos está em <a class="link" href="https://www.gov.br/saude/pt-br/composicao/sectics/farmacia-popular" target="_blank" rel="noopener">gov.br/farmaciapopular</a>.</p></div></div>
+      </section>
+
       <section id="orders" class="screen pad">
         <span class="eyebrow red">SEU HISTÓRICO</span>
         <h1>Meus pedidos</h1>
@@ -309,6 +333,7 @@
       <span class="sidebar-label">SEU ESPAÇO</span>
       <button data-nav="home" class="active" aria-current="page"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>Buscar</button>
       <button data-nav="mapScreen"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg>Farmácias</button>
+      <button data-nav="popular"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-shield"/></svg><span><span class="nav-long">Farmácia </span>Popular</span></button>
       <button data-nav="orders"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-order"/></svg>Pedidos</button>
       <button data-nav="more"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-more"/></svg>Ajuda</button>
       <div class="sidebar-note"><svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg><strong>Cuidar faz bem.</strong><p>Um caminho mais simples para o seu bem-estar.</p><span>Dose Certa © 2026</span></div>

@@ -521,6 +521,29 @@ input[type="file"]:focus-visible + .upload, .upload:focus-within { outline: 3px 
 .faq details p { margin: 0; padding: 0 18px 16px; font-size: 13px; color: var(--muted); }
 .about-box { margin-top: 20px; }
 
+/* ---------- Farmácia Popular ---------- */
+
+.tag.popular { background: #e7f0fa; color: #22598f; }
+.popular-seal { font-size: 12px; font-weight: 600; color: #22598f; background: #e7f0fa; padding: 4px 9px; border-radius: 7px; }
+.popular-intro { margin: 8px 0 18px; font-size: 14px; line-height: 1.6; }
+.popular-steps { display: grid; gap: 10px; }
+.popular-steps div { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--soft-line); border-radius: 14px; padding: 12px 14px; font-size: 13px; }
+.popular-steps strong { width: 28px; height: 28px; flex-shrink: 0; display: grid; place-items: center; border-radius: 50%; background: var(--pink); color: var(--red); }
+.popular-meds { display: grid; gap: 10px; }
+.popular-med { display: flex; align-items: center; text-align: left; width: 100%; gap: 12px; padding: 12px; background: #fff; border: 1px solid var(--soft-line); border-radius: 14px; }
+.popular-med:hover { border-color: #e2c4d0; }
+.popular-med.selected { border-color: var(--red); background: #fcf6f8; box-shadow: inset 0 0 0 1px var(--red); }
+.popular-med .text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.popular-med strong { display: block; font-size: 13px; margin-bottom: 5px; }
+.popular-med .tag { display: inline-block; }
+.popular-med .text > .small { display: block; margin-top: 5px; }
+.popular-map { height: 280px; position: relative; z-index: 0; background: #e1e4e4; border-radius: 16px; overflow: hidden; border: 1px solid #d8dfdc; margin-bottom: 10px; }
+.stock-note { font-size: 11px; font-weight: 600; white-space: nowrap; }
+.stock-note.ok { color: #2f7a55; }
+.stock-note.low { color: #a46f1a; }
+#popular .care-note .icon { flex-shrink: 0; }
+.nav-long { display: none; }
+
 /* ---------- navegação inferior e rodapé ---------- */
 
 nav {
@@ -595,6 +618,8 @@ nav button.active .icon { background: #f7eaf0; border-radius: 8px; box-sizing: c
   #results .row, .order-group .row { padding: 16px; background: #fff; border: 1px solid var(--line); border-radius: 14px; }
   #results .empty-state { grid-column: 1 / -1; }
   .map { height: 360px; }
+  .popular-meds { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .popular-map { height: 340px; }
 }
 
 /* ---------- computador ---------- */
@@ -717,6 +742,16 @@ nav button.active .icon { background: #f7eaf0; border-radius: 8px; box-sizing: c
   #profile .primary, #profile .secondary { max-width: 360px; }
   #notifications, #more { max-width: 900px; }
   .about-box { background: #fff; padding: 30px; border: 1px solid var(--soft-line); margin-top: 26px; }
+
+  .nav-long { display: inline; }
+  #popular { max-width: 1100px; }
+  .popular-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .popular-steps div { padding: 16px 18px; }
+  .popular-meds { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .popular-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+  .popular-map { height: 460px; margin: 0; position: sticky; top: 112px; }
+  #popularHint { margin-top: 0; }
+  #popularList .row { padding: 18px; background: #fff; border: 1px solid var(--soft-line); border-radius: 14px; margin-bottom: 10px; }
 }
 
 @media (min-width: 1200px) {

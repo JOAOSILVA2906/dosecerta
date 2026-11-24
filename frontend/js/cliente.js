@@ -8,7 +8,7 @@
   const telas = [...document.querySelectorAll(".screen")];
   const botoesNav = [...document.querySelectorAll("[data-nav]")];
   const semAnimacao = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const TELAS_LIVRES = ["home", "mapScreen", "orders", "notifications", "profile", "more"];
+  const TELAS_LIVRES = ["home", "mapScreen", "popular", "orders", "notifications", "profile", "more"];
   const FORMAS = ["comprimido", "capsula", "liquido", "spray", "sache"];
 
   const icone = nome => `<svg class="icon" aria-hidden="true"><use href="#i-${nome}"/></svg>`;
@@ -20,6 +20,7 @@
   let categoriaAtiva = "";
   let medSelecionado = null;
   let farmSelecionada = null;
+  let medPopular = null; // medicamento escolhido na tela Farmácia Popular
   let quantidade = 1;
   let recebimento = null;
   let destino = null;
@@ -29,7 +30,7 @@
   let timerAviso;
   let segundos = 0;
   const statusConhecidos = new Map();
-  const mapas = { farmacias: null, pinos: null, chave: "", pedido: null, camada: null, pedidoId: null, moto: null };
+  const mapas = { popular: null, pinosPopular: null, chavePopular: "", farmacias: null, pinos: null, chave: "", pedido: null, camada: null, pedidoId: null, moto: null };
 
   /* ---------- utilidades ---------- */
 
@@ -88,6 +89,7 @@
     if (m.generico) lista.push('<span class="tag">Genérico</span>');
     if (m.receita === "simples") lista.push('<span class="tag rx">Precisa de receita</span>');
     if (m.receita === "retencao") lista.push('<span class="tag rx">Retém receita</span>');
+    if (D.indicacaoPopular(m)) lista.push('<span class="tag popular">Farmácia Popular</span>');
     return lista.join("");
   }
 
@@ -144,6 +146,7 @@
   function renderizar(id) {
     if (id === "home") renderCatalogo();
     if (id === "mapScreen") renderFarmacias();
+    if (id === "popular") renderPopular();
     if (id === "detail") renderDetalhe();
     if (id === "receive") renderRecebimento();
     if (id === "tracking") renderAcompanhamento();
@@ -239,12 +242,98 @@
       }
       return `<button class="row pharmacy-row${farmSelecionada?.id === f.id ? " current" : ""}" data-pharmacy="${f.id}">
         ${icone("pin")}
-        <span class="text"><strong class="pharmacy-row-name">${esc(f.nome)}</strong><span class="muted small">${D.km(distancia)} · ${esc(f.bairro)}</span><span class="small ${aberta ? "open" : "closed"}">${D.textoHorario(f)}</span></span>
+        <span class="text"><strong class="pharmacy-row-name">${esc(f.nome)}</strong><span class="muted small">${D.km(distancia)} · ${esc(f.bairro)}</span><span class="small ${aberta ? "open" : "closed"}">${D.textoHorario(f)}</span>${D.credenciadaPopular(f) ? '<span class="tags"><span class="tag popular">Farmácia Popular</span></span>' : ""}</span>
         ${lado}<span class="chevron" aria-hidden="true">›</span>
       </button>`;
     }).join("");
 
     desenharMapa(lista);
+  }
+
+  /* ---------- Farmácia Popular ---------- */
+
+  function renderPopular() {
+    const meds = D.catalogo().filter(m => D.indicacaoPopular(m));
+    const credenciadas = D.farmacias.filter(D.credenciadaPopular);
+    const med = meds.find(m => m.id === medPopular) || null;
+
+    $("popularMeds").innerHTML = meds.map(m => {
+      const onde = credenciadas.filter(f => D.estoqueDe(f.id, m.id) > 0).length;
+      const ativo = med?.id === m.id;
+      return `<button type="button" class="popular-med${ativo ? " selected" : ""}" data-popular-med="${m.id}" aria-pressed="${ativo}">
+        ${arteRemedio(m)}
+        <span class="text"><strong>${esc(m.nome)}</strong><span class="tag popular">${esc(D.indicacaoPopular(m))}</span><span class="small ${onde ? "muted" : "closed"}">${onde ? `Tem em ${onde} de ${credenciadas.length} farmácias` : "Em falta nas credenciadas"}</span></span>
+      </button>`;
+    }).join("");
+
+    const lista = credenciadas.map(f => ({
+      f,
+      distancia: D.distanciaKm(local, f),
+      aberta: D.aberta(f),
+      estoque: med ? D.estoqueDe(f.id, med.id) : null,
+      itens: meds.filter(m => D.estoqueDe(f.id, m.id) > 0).length
+    })).sort((a, b) => {
+      if (med && (a.estoque > 0) !== (b.estoque > 0)) return a.estoque > 0 ? -1 : 1;
+      return a.distancia - b.distancia;
+    });
+
+    $("popularHint").textContent = med
+      ? `${lista.filter(item => item.estoque > 0).length} de ${lista.length} farmácias credenciadas têm ${med.nome} agora.`
+      : `${lista.length} farmácias credenciadas. Toque em um medicamento acima para ver onde tem.`;
+
+    $("popularList").innerHTML = lista.map(({ f, distancia, aberta, estoque, itens }) => {
+      let lado;
+      if (!med) lado = `<span class="stock-note ok">${itens} de ${meds.length} itens</span>`;
+      else if (estoque === 0) lado = '<span class="badge off">Em falta</span>';
+      else lado = `<span class="stock-note ${estoque <= 5 ? "low" : "ok"}">${estoque <= 5 ? "Últimas unidades" : "Disponível"}</span>`;
+      return `<button class="row pharmacy-row" data-pharmacy="${f.id}">
+        ${icone("pin")}
+        <span class="text"><strong class="pharmacy-row-name">${esc(f.nome)}</strong><span class="muted small">${D.km(distancia)} · ${esc(f.bairro)}</span><span class="small ${aberta ? "open" : "closed"}">${D.textoHorario(f)}</span></span>
+        ${lado}<span class="chevron" aria-hidden="true">›</span>
+      </button>`;
+    }).join("");
+
+    desenharMapaPopular(lista, med);
+  }
+
+  function desenharMapaPopular(lista, med) {
+    if (!mapas.popular) {
+      mapas.popular = Mapa.criar($("popularMap"), local, 12);
+      if (!mapas.popular) return;
+      mapas.pinosPopular = L.layerGroup().addTo(mapas.popular);
+    }
+    Mapa.ajustar(mapas.popular);
+    mapas.pinosPopular.clearLayers();
+
+    const perto = Math.min(...lista.map(item => item.distancia)) < 40;
+    if (perto) {
+      L.marker([local.lat, local.lng], { icon: Mapa.pontoUsuario(), keyboard: false, zIndexOffset: -100 })
+        .bindTooltip(local.padrao ? "Região de referência" : "Você está aqui")
+        .addTo(mapas.pinosPopular);
+    }
+
+    lista.forEach(({ f, estoque }) => {
+      const emFalta = med && estoque === 0;
+      const dica = `<strong>${esc(f.nome)}</strong><br>${med ? (emFalta ? "Em falta" : "Disponível") : esc(f.bairro)}`;
+      L.marker([f.lat, f.lng], { icon: Mapa.pino("farmacia", med && !emFalta), title: f.nome, opacity: emFalta ? 0.45 : 1 })
+        .bindTooltip(dica, { direction: "top" })
+        .on("click", () => abrirFarmaciaPopular(f.id))
+        .addTo(mapas.pinosPopular);
+    });
+
+    const chave = `${local.lat}|${local.lng}`;
+    if (chave !== mapas.chavePopular) {
+      mapas.chavePopular = chave;
+      const limites = L.latLngBounds(lista.map(item => [item.f.lat, item.f.lng]));
+      if (perto) limites.extend([local.lat, local.lng]);
+      mapas.popular.fitBounds(limites, { padding: [36, 36], maxZoom: 14 });
+    }
+  }
+
+  // Da tela Farmácia Popular, abre a farmácia já com o remédio escolhido (se houver)
+  function abrirFarmaciaPopular(id) {
+    if (medPopular) medSelecionado = D.medicamento(medPopular);
+    abrirFarmacia(id);
   }
 
   function desenharMapa(lista) {
@@ -343,6 +432,7 @@
     $("pharmacyRating").innerHTML = `${icone("star")} ${f.nota.toLocaleString("pt-BR", { minimumFractionDigits: 1 })} <span class="muted">(${f.avaliacoes} avaliações)</span>`;
     $("pharmacyOpen").textContent = D.textoHorario(f);
     $("pharmacyOpen").className = `open-status ${aberta ? "open" : "closed"}`;
+    $("pharmacyPopular").hidden = !D.credenciadaPopular(f);
     $("pharmacyHours").textContent = f.horario ? `Todos os dias, das ${f.horario.abre} às ${f.horario.fecha}` : "24 horas, todos os dias";
     $("pharmacyPhone").textContent = f.telefone;
     $("pharmacyPhone").href = `tel:+55${f.telefone.replace(/\D/g, "")}`;
@@ -920,6 +1010,19 @@
   $("pharmacyList").addEventListener("click", evento => {
     const item = evento.target.closest("[data-pharmacy]");
     if (item) abrirFarmacia(item.dataset.pharmacy);
+  });
+
+  $("popularMeds").addEventListener("click", evento => {
+    const item = evento.target.closest("[data-popular-med]");
+    if (!item) return;
+    const id = Number(item.dataset.popularMed);
+    medPopular = medPopular === id ? null : id;
+    renderPopular();
+  });
+
+  $("popularList").addEventListener("click", evento => {
+    const item = evento.target.closest("[data-pharmacy]");
+    if (item) abrirFarmaciaPopular(item.dataset.pharmacy);
   });
 
   document.addEventListener("click", evento => {

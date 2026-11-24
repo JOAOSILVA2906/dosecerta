@@ -95,6 +95,14 @@ window.DoseCerta = (() => {
     { id: 8, nome: "Farmácia Preço Justo", endereco: "QS 406, Conjunto E, Lote 2", bairro: "Samambaia", lat: -15.8750, lng: -48.0850, horario: { abre: "08:00", fecha: "21:00" }, telefone: "(61) 3358-4470", nota: 4.5, avaliacoes: 131, fator: 0.9 }
   ];
 
+  // Farmácia Popular (dados de demonstração): unidades credenciadas e itens do catálogo cobertos pelo
+  // programa, com a indicação. A lista oficial completa fica em gov.br/farmaciapopular.
+  const POPULAR_FARMACIAS = [1, 2, 4, 5, 7, 8];
+  const POPULAR_MEDICAMENTOS = {
+    1: "Hipertensão", 2: "Hipertensão", 4: "Hipertensão", 5: "Hipertensão",
+    18: "Diabetes", 19: "Diabetes", 31: "Colesterol", 43: "Rinite"
+  };
+
   const LOCAL_PADRAO = { lat: -15.8396, lng: -48.0256, nome: "Águas Claras, DF", padrao: true };
 
   // Tempo (ms) que cada etapa leva quando a farmácia não age antes.
@@ -199,6 +207,8 @@ window.DoseCerta = (() => {
 
   const categoria = id => categorias.find(c => c.id === id) || categorias[categorias.length - 1];
   const farmacia = id => farmacias.find(f => f.id === Number(id));
+  const credenciadaPopular = farm => POPULAR_FARMACIAS.includes(farm.id);
+  const indicacaoPopular = med => POPULAR_MEDICAMENTOS[med.id] || null;
 
   function catalogo() {
     return medicamentos.concat(ler(CHAVES.extras, []));
@@ -519,6 +529,7 @@ window.DoseCerta = (() => {
     categorias, farmacias,
     normalizar, escapar, moeda, km, hora, dataCurta, haTempo, distanciaKm,
     categoria, farmacia, catalogo, medicamento, adicionarMedicamento,
+    credenciadaPopular, indicacaoPopular,
     estoqueDe, definirEstoque, preco, menorPreco, aberta, textoHorario,
     taxaEntrega, prazoEntrega, localizacao, salvarLocalizacao,
     rotulo, etapas, pedidos, pedido, criarPedido, avancarPedido, cancelarPedido,
