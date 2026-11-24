@@ -59,6 +59,20 @@ O banco é criado sozinho em `backend/dados/dosecerta.db` na primeira vez. Outro
 npm run resetar   # apaga o banco e recria com os dados iniciais
 ```
 
+## Farmácia Popular
+
+A opção **Farmácia Popular** no menu do cliente reúne o que a pessoa precisa para retirar medicamentos de graça pelo programa do Governo Federal:
+
+- **O que levar:** documento oficial com foto e CPF, receita do SUS ou particular dentro da validade, e uma farmácia com o selo "Aqui Tem Farmácia Popular".
+- **Medicamentos do programa** que estão no catálogo, com a indicação (hipertensão, diabetes, colesterol, rinite) e em quantas farmácias credenciadas há estoque.
+- **Mapa e lista das farmácias credenciadas**, da mais perto para a mais longe. Ao escolher um medicamento, aparecem as farmácias que têm, as que estão nas últimas unidades e as que estão em falta.
+
+Os itens e as farmácias do programa também ganham a etiqueta "Farmácia Popular" na busca e no detalhe da farmácia.
+
+A retirada gratuita acontece no balcão da farmácia. Pedidos feitos pelo Dose Certa seguem o preço normal da loja.
+
+Não existe API pública com o estoque das farmácias do programa. O estoque mostrado é o que cada farmácia informa pelo portal. As farmácias credenciadas desta demonstração e os medicamentos cobertos ficam em `POPULAR_FARMACIAS` e `POPULAR_MEDICAMENTOS`, no início de `frontend/js/dados.js`. Por enquanto essa informação existe só no front-end, sem tabela no banco nem rota na API. A lista oficial completa está em [gov.br/farmaciapopular](https://www.gov.br/saude/pt-br/composicao/sectics/farmacia-popular).
+
 ## API
 
 | Método | Endereço | Quem pode |
